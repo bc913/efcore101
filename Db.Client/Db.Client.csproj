@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Db.Sqlite\Db.Sqlite.csproj" />
+  </ItemGroup>
+
+  <!--
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /y ..\Shine.Sqlite\blogging.db&#xD;&#xA;xcopy /y ..\Shine.Sqlite\users.db&#xD;&#xA;xcopy /y ..\Shine.Sqlite\books.db&#xD;&#xA;xcopy /y ..\Shine.Sqlite\students.db" />
+  </Target>
+  -->
+
+
+</Project>
