@@ -7,7 +7,7 @@ using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Db.Tests.OneToOne
+namespace Bcan.Tests.OneToOne
 {
     public abstract class OtoTestsBase
     {

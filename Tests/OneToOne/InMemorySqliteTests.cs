@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Db.Tests.OneToOne
+namespace Bcan.Tests.OneToOne
 {
     [TestFixture]
     public class InMemorySqliteTestsOptional : InMemorySqliteTests

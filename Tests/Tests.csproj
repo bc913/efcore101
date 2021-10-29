@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
+    <AssemblyName>Bcan.Tests</AssemblyName>
+    <RootNamespace>Bcan.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

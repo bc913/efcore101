@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Bcan.Domain.Entities;
 
-namespace Db.Tests.OneToMany
+namespace Bcan.Tests.OneToMany
 {
     public abstract class OtmTests
     {

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Db.Tests.ManyToMany
+namespace Bcan.Tests.ManyToMany
 {
     public abstract class MtmTestBase
     {

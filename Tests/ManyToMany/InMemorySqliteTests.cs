@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Db.Tests.ManyToMany
+namespace Bcan.Tests.ManyToMany
 {
     [TestFixture]
     public class InMemorySqliteTestsOptional : InMemorySqliteTests 

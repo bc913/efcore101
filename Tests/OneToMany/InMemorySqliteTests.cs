@@ -8,7 +8,7 @@ using Bcan.Domain.Entities;
 using Bcan.Domain.Contexts;
 using System.Linq;
 
-namespace Db.Tests.OneToMany
+namespace Bcan.Tests.OneToMany
 {
     
     public class InMemorySqliteTests : OtmTests, IDisposable
