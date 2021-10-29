@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Db.Client
+namespace Bcan.Client
 {
     class Program
     {
