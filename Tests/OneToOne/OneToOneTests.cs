@@ -1,8 +1,8 @@
-﻿using Db.Sqlite.Entities;
+﻿using Bcan.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Db.Sqlite.Contexts;
+using Bcan.Domain.Contexts;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -36,7 +36,7 @@ namespace Db.Tests.OneToOne
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Db.Sqlite.Contexts.OtoContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtoContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

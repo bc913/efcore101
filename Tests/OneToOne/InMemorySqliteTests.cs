@@ -1,5 +1,5 @@
-﻿using Db.Sqlite.Contexts;
-using Db.Sqlite.Entities;
+﻿using Bcan.Domain.Contexts;
+using Bcan.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Linq;

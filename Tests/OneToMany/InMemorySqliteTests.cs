@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using NUnit.Framework;
 using System;
 using System.Data.Common;
-using Db.Sqlite.Entities;
-using Db.Sqlite.Contexts;
+using Bcan.Domain.Entities;
+using Bcan.Domain.Contexts;
 using System.Linq;
 
 namespace Db.Tests.OneToMany
@@ -15,7 +15,7 @@ namespace Db.Tests.OneToMany
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Db.Sqlite.Contexts.OtmContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtmContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

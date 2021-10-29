@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Db.Sqlite.Contexts;
-using Db.Sqlite.Entities;
+using Bcan.Domain.Contexts;
+using Bcan.Domain.Entities;
 using System.Linq;
 
-namespace Db.Sqlite.Samples
+namespace Bcan.Domain.Samples
 {
     public static class OneToOne
     {

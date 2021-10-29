@@ -6,19 +6,19 @@ namespace Db.Client
     {
         static void Main(string[] args)
         {
-            //Db.Sqlite.Samples.OneToOne.Run(
-            //    new DbContextOptionsBuilder<Db.Sqlite.Contexts.OtoContext>()
+            //Bcan.Domain.Samples.OneToOne.Run(
+            //    new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtoContext>()
             //    .UseSqlite("Filename=OtoRecords.db").Options, 
-            //    Db.Sqlite.Contexts.PrincipalType.Address, 
+            //    Bcan.Domain.Contexts.PrincipalType.Address, 
             //    true);
 
-            //Db.Sqlite.Samples.OneToMany.Run(
-            //    new DbContextOptionsBuilder<Db.Sqlite.Contexts.OtmContext>()
+            //Bcan.Domain.Samples.OneToMany.Run(
+            //    new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtmContext>()
             //    .UseSqlite("Filename=OtmRecords.db").Options,
             //    true);
 
-            Db.Sqlite.Samples.ManyToMany.Run(
-                new DbContextOptionsBuilder<Db.Sqlite.Contexts.MtmContext>()
+            Bcan.Domain.Samples.ManyToMany.Run(
+                new DbContextOptionsBuilder<Bcan.Domain.Contexts.MtmContext>()
                .UseSqlite("Filename=MtmRecords.db").Options);
         }
     }

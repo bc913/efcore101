@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Db.Sqlite.Entities;
-using Db.Sqlite.Contexts;
+using Bcan.Domain.Entities;
+using Bcan.Domain.Contexts;
 using System.Linq;
 
-namespace Db.Sqlite.Samples
+namespace Bcan.Domain.Samples
 {
     public class ManyToMany
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Db.Sqlite.Entities
+namespace Bcan.Domain.Entities
 {
     public class Book
     {

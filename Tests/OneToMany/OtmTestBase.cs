@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Db.Sqlite.Entities;
+using Bcan.Domain.Entities;
 
 namespace Db.Tests.OneToMany
 {

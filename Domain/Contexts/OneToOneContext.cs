@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Db.Sqlite.Entities;
+using Bcan.Domain.Entities;
 
-namespace Db.Sqlite.Contexts
+namespace Bcan.Domain.Contexts
 {
     public enum PrincipalType
     {

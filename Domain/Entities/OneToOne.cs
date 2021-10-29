@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Db.Sqlite.Entities
+namespace Bcan.Domain.Entities
 {
     public class Student
     {
