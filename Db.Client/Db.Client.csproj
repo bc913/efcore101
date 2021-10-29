@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Db.Sqlite\Db.Sqlite.csproj" />
-  </ItemGroup>
 
   <!--
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
