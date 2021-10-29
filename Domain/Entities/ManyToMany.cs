@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bcan.Domain.Entities
+namespace Bcan.Efpg.Domain.Entities
 {
     public class Book
     {

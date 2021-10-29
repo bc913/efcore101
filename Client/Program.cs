@@ -1,24 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Bcan.Client
+namespace Bcan.Efpg.Client
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //Bcan.Domain.Samples.OneToOne.Run(
-            //    new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtoContext>()
+            //Bcan.Efpg.Domain.Samples.OneToOne.Run(
+            //    new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtoContext>()
             //    .UseSqlite("Filename=OtoRecords.db").Options, 
-            //    Bcan.Domain.Contexts.PrincipalType.Address, 
+            //    Bcan.Efpg.Domain.Contexts.PrincipalType.Address, 
             //    true);
 
-            //Bcan.Domain.Samples.OneToMany.Run(
-            //    new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtmContext>()
+            //Bcan.Efpg.Domain.Samples.OneToMany.Run(
+            //    new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtmContext>()
             //    .UseSqlite("Filename=OtmRecords.db").Options,
             //    true);
 
-            Bcan.Domain.Samples.ManyToMany.Run(
-                new DbContextOptionsBuilder<Bcan.Domain.Contexts.MtmContext>()
+            Bcan.Efpg.Domain.Samples.ManyToMany.Run(
+                new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.MtmContext>()
                .UseSqlite("Filename=MtmRecords.db").Options);
         }
     }

@@ -1,5 +1,5 @@
-﻿using Bcan.Domain.Contexts;
-using Bcan.Domain.Entities;
+﻿using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using NUnit.Framework;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bcan.Tests.ManyToMany
+namespace Bcan.Efpg.Tests.ManyToMany
 {
     [TestFixture]
     public class InMemorySqliteTestsOptional : InMemorySqliteTests 

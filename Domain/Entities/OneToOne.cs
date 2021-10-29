@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bcan.Domain.Entities
+namespace Bcan.Efpg.Domain.Entities
 {
     public class Student
     {

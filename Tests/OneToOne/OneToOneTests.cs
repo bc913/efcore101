@@ -1,13 +1,13 @@
-﻿using Bcan.Domain.Entities;
+﻿using Bcan.Efpg.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Bcan.Domain.Contexts;
+using Bcan.Efpg.Domain.Contexts;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Bcan.Tests.OneToOne
+namespace Bcan.Efpg.Tests.OneToOne
 {
     public abstract class OtoTestsBase
     {
@@ -36,7 +36,7 @@ namespace Bcan.Tests.OneToOne
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtoContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtoContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

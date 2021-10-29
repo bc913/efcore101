@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Bcan.Domain.Entities;
-using Bcan.Domain.Contexts;
+using Bcan.Efpg.Domain.Entities;
+using Bcan.Efpg.Domain.Contexts;
 using System.Linq;
 
-namespace Bcan.Domain.Samples
+namespace Bcan.Efpg.Domain.Samples
 {
     public class ManyToMany
     {

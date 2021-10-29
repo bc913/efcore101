@@ -1,10 +1,10 @@
-﻿using Bcan.Domain.Contexts;
-using Bcan.Domain.Entities;
+﻿using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Bcan.Tests.OneToOne
+namespace Bcan.Efpg.Tests.OneToOne
 {
     [TestFixture]
     public class InMemorySqliteTestsOptional : InMemorySqliteTests

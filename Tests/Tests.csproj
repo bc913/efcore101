@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <AssemblyName>Bcan.Tests</AssemblyName>
-    <RootNamespace>Bcan.Tests</RootNamespace>
+    <AssemblyName>Bcan.Efpg.Tests</AssemblyName>
+    <RootNamespace>Bcan.Efpg.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

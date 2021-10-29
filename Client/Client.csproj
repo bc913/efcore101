@@ -8,8 +8,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
-    <AssemblyName>Bcan.Client</AssemblyName>
-    <RootNamespace>Bcan.Client</RootNamespace>
+    <AssemblyName>Bcan.Efpg.Client</AssemblyName>
+    <RootNamespace>Bcan.Efpg.Client</RootNamespace>
   </PropertyGroup>
 
   <!--

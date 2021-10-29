@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bcan.Domain.Entities
+namespace Bcan.Efpg.Domain.Entities
 {
     //In this example the shadow foreign key is BlogId because prepending the navigation name would be redundant.
     public class Blog

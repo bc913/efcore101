@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Bcan.Domain.Entities;
+using Bcan.Efpg.Domain.Entities;
 
-namespace Bcan.Domain.Contexts
+namespace Bcan.Efpg.Domain.Contexts
 {
     public class OtmContext : DbContext
     {

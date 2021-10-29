@@ -1,4 +1,4 @@
-﻿using Bcan.Domain.Entities;
+﻿using Bcan.Efpg.Domain.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Bcan.Tests.ManyToMany
+namespace Bcan.Efpg.Tests.ManyToMany
 {
     public abstract class MtmTestBase
     {
@@ -38,7 +38,7 @@ namespace Bcan.Tests.ManyToMany
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Domain.Contexts.MtmContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.MtmContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

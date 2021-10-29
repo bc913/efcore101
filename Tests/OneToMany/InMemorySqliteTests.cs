@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using NUnit.Framework;
 using System;
 using System.Data.Common;
-using Bcan.Domain.Entities;
-using Bcan.Domain.Contexts;
+using Bcan.Efpg.Domain.Entities;
+using Bcan.Efpg.Domain.Contexts;
 using System.Linq;
 
-namespace Bcan.Tests.OneToMany
+namespace Bcan.Efpg.Tests.OneToMany
 {
     
     public class InMemorySqliteTests : OtmTests, IDisposable
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Domain.Contexts.OtmContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtmContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

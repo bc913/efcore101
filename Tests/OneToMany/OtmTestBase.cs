@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Bcan.Domain.Entities;
+using Bcan.Efpg.Domain.Entities;
 
-namespace Bcan.Tests.OneToMany
+namespace Bcan.Efpg.Tests.OneToMany
 {
     public abstract class OtmTests
     {

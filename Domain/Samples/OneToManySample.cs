@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bcan.Domain.Entities;
-using Bcan.Domain.Contexts;
+using Bcan.Efpg.Domain.Entities;
+using Bcan.Efpg.Domain.Contexts;
 
-namespace Bcan.Domain.Samples
+namespace Bcan.Efpg.Domain.Samples
 {
     public class OneToMany
     {
