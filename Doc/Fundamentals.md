@@ -1,6 +1,24 @@
 # Fundamentals
 Some keypoints are covered here.
 
+## Migrations
+It provides the interaction between the data model and the database schema. It stores the necessary information to handle the tasks on runtime such as building queries, commands to push the data to the database, transforming database results into your objects.
+
+Also, when a change is made to the data model and/or the db context, EF Core has to know about that diff to handle the database operations appropriately so migration must be run after each change before proceeding.
+
+### How to use?
+- CLI: There are two ways to achieve:
+    1. To consume through Visual Studio Package Manager Console: Add reference to `Microsoft.EntityFrameworkCore.Tools`
+    2. `dotnet` cli:
+    ```bash
+    # Install dotnet-ef
+    dotnet tool install --global dotnet-ef
+    # Use dotnet-ef commands
+    ```
+- API: Add reference to `Microsoft.EntityFrameworkCore.Design`.
+
+> `Microsoft.EntityFrameworkCore.Tools` already has a dependency to the `Micsrosoft.EntityFrameworkCore.Design` package.
+
 ## Entity
 It can be considered as in-memory representation of the of a database record. The type of a **DbSet** is referred as *entity* and it is included EF Core model by default. It stores data and usually does not include bussiness logic in method form. 
 
