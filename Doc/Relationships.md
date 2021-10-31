@@ -2,6 +2,7 @@
 - [Introduction](#introduction)
 - [Optional vs. Required Relationships](#optional-vs.-required-relationships)
 - [Fully Defined vs. Ambiguous Relationships](#fully-defined-vs.-ambiguous-relationships)
+- [Manual Configuration](#manual-configuration)
 - [Relationship Types](#relationship-types)
     - [One-to-one](#one-to-one)
     - [One-to-Many](#one-to-many)
@@ -14,7 +15,7 @@
 [Conventions](<https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#conventions>) through *Microsoft*'s documentations.
 
 > Conventions can be considered as default understanding of EF Core. THey can be overriden using `Configurations`.
-### [Optional vs. Required Relationships](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#required-and-optional-relationships)
+## [Optional vs. Required Relationships](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#required-and-optional-relationships)
 This controls whether the `Foreign Key` is required or optional. By default, the relationships are optional.
 
 **Optional Relationship**:
@@ -28,12 +29,12 @@ This controls whether the `Foreign Key` is required or optional. By default, the
 
 To change the delete behavior of the dependent entity use `OnDelete()`
 
-### Fully Defined vs. Ambiguous Relationships
+## Fully Defined vs. Ambiguous Relationships
 
-#### Fully defined relationships (unambigious)
+### Fully defined relationships (unambigious)
 If the relationships between two entities are unambigous, then there is no need to configure the relationships via Fluent API or Data Annotations. It can be in one way (single navigation) or bidirectional
 
-##### [One way (Single navigation)](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property)
+#### [One way (Single navigation)](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property)
 
 ```csharp
 public class User
@@ -54,7 +55,7 @@ public class Contact
 ```
 You can also have a single navigation property and a foreign key property.
 
-##### [Birdirectional Navigation](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#fully-defined-relationships)
+#### [Birdirectional Navigation](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#fully-defined-relationships)
 
 This relationship is bidirectional between two entites through one `navigation property` for each entity. It is usually ( not neccesserly) in the following form:
 
@@ -84,19 +85,19 @@ In this case, the relationship is clear. `User` is **parent** or **principal** e
 
 There is no need to specify `Foreign Key` here because it is done implicity. To specify it manually, one can choose one of the following. For details, see [this](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#fully-defined-relationships). (again, this is not required for this relationship):
 
-#### Ambiguous relationships
+### Ambiguous relationships
 As mentioned above, the relationsship is considered as unambigous ( fully defined) if there is only one pair of `navigation property` that points to each other. If there is more than one pair of navigation property that points each other for two entites then this is an ambigious relationship.
 
 To resolve this, manual configuration is required.
 
-#### Manual configuration
+## Manual configuration
 It can be done through Fluent API ( advised) or Data Annotations. `Fluent API` style will be described here for several reasons:
 - It helps to keep entity classes clean and independent of database provider type.
 - Perfectly fits to the `Clean Code Architecture` concept.
 
 
-### Relationship Types
-#### One to one
+## Relationship Types
+### One to one
 When a single field in Table A is related to **only one** field in Table B. This can be considered as an answer of the question:
 > How a single field in Table A is represented in Table B?
 
@@ -271,7 +272,7 @@ There is no special exception here, too. Just query the desired model and update
 To change the default delete behavior, use `OnDelete()` method in `OnModelCreating()`. Check out [Microsoft's documentation](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#cascade-delete) for details.
 
 
-#### One to Many
+### One to Many
 A single record in Table A is related to one or multiple records in Table B. See the following example:
 Customer Table:
 
@@ -443,7 +444,7 @@ public class OtmContext : DbContext
 
 As one might have noticed, I prefer not using an additional property to define `Foreign Key` in the dependent entity. It is a database layer info and should not exist in our application logic unless we have to. I also don't find it meaningful to name identifier property as `<entity_name>Id` for obviuos reasons :). 
 
-#### Many to Many
+### Many to Many
 One record in Table A is related to one or multiple records in Table B and vice versa. In order to achieve this behavior, a `join` or `link` table should be provided.
 
 ```csharp
@@ -506,9 +507,7 @@ public class MtmContext : DbContext
 ```
 The `Foreign Key` s are defined in `join` entity. For this relationship, I've not seen any usage of `Required` or `Optional` relationship configuration.
 
-
-
-### Resources
+## References
 https://github.com/dotnet/efcore/issues/10084#issuecomment-336947129
 
 https://docs.microsoft.com/en-us/ef/core/get-started/?tabs=visual-studio
