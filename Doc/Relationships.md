@@ -13,6 +13,7 @@
 *Relationship* stands for the interaction of a field of a record in a table with another field in another table. It also defines the way how the data is stored in a relational database and this is achieved with **Foreign Key** constraint. In order to understand relationships in EF Core context, it'd be better first to grasp [Definitions of Terms](<https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#definition-of-terms>) and 
 [Conventions](<https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#conventions>) through *Microsoft*'s documentations.
 
+> Conventions can be considered as default understanding of EF Core. THey can be overriden using `Configurations`.
 ### [Optional vs. Required Relationships](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#required-and-optional-relationships)
 This controls whether the `Foreign Key` is required or optional. By default, the relationships are optional.
 
