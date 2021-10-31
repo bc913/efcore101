@@ -292,7 +292,7 @@ A customer can check out multiple video games but one video game can be checked 
 
 Let's start coding. I'll be following the one-to-many example available in Microsoft's documentation with some tweaks. We can define `one-to-many` relationship in different ways. I'll be showing two of them.
 
-[**Option 1: (Default) No navigation property on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
+[**Convention 1: (Default) No navigation property on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
 
 Child needs NO references back to the parent. EF Core understands 1:* relationship.
 
@@ -318,6 +318,7 @@ public class OtmContext : DbContext
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
 
+    // (Optional???)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Blog>()
@@ -326,7 +327,7 @@ public class OtmContext : DbContext
     }
 }
 ```
-[**Option 2: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
+[**Convention 2: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
 ```csharp
 // Entities
 public class Blog //Parent
@@ -363,7 +364,7 @@ public class OtmContext : DbContext
 }
 
 ```
-[**Option 3: Explicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#shadow-foreign-key)
+[**Convention 3: Explicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#shadow-foreign-key)
 ```csharp
 // Entities
 public class Blog //Parent
@@ -401,7 +402,7 @@ public class OtmContext : DbContext
 }
 ```
 
-[**Option 4: With defined Foreign Key ( No navigation property on both ends)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#without-navigation-property)
+[**Convention 4: With defined Foreign Key ( No navigation property on both ends)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#without-navigation-property)
 ```csharp
 // Entities
 public class Blog // Parent
