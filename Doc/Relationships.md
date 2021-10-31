@@ -292,16 +292,51 @@ A customer can check out multiple video games but one video game can be checked 
 
 Let's start coding. I'll be following the one-to-many example available in Microsoft's documentation with some tweaks. We can define `one-to-many` relationship in different ways. I'll be showing two of them.
 
-[**Option 1: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
+[**Option 1: (Default) No navigation property on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
+
+Child needs NO references back to the parent. EF Core understands 1:* relationship.
+
 ```csharp
 // Entities
-public class Blog
+public class Blog // Parent
 {
     public Guid Id { get; set; }
     public string Url { get; set; }
     public List<Post> Posts { get; private set; }
 }
-public class Post
+public class Post // Child
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    // No navigation property
+}
+
+// Context
+public class OtmContext : DbContext
+{
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Post> Posts { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Blog>()
+           .HasMany(b => b.Posts)
+           .WithOne();
+    }
+}
+```
+[**Option 2: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
+```csharp
+// Entities
+public class Blog //Parent
+{
+    public Guid Id { get; set; }
+    public string Url { get; set; }
+    // Always initialize collections to an empty one.
+    public List<Post> Posts { get; private set; } = new List<Post>();
+}
+public class Post //Child
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
@@ -328,16 +363,16 @@ public class OtmContext : DbContext
 }
 
 ```
-[**Option 2: Explicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#shadow-foreign-key)
+[**Option 3: Explicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#shadow-foreign-key)
 ```csharp
 // Entities
-public class Blog
+public class Blog //Parent
 {
     public Guid Id { get; set; }
     public string Url { get; set; }
-    public List<Post> Posts { get; private set; }
+    public List<Post> Posts { get; private set; } = new List<Post>();
 }
-public class Post
+public class Post //Child
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
@@ -366,47 +401,15 @@ public class OtmContext : DbContext
 }
 ```
 
-[**Option 3: No navigation property on dependent**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
-```csharp
-// Entities
-public class Blog
-{
-    public Guid Id { get; set; }
-    public string Url { get; set; }
-    public List<Post> Posts { get; private set; }
-}
-public class Post
-{
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-    // No navigation property
-}
-
-// Context
-public class OtmContext : DbContext
-{
-    public DbSet<Blog> Blogs { get; set; }
-    public DbSet<Post> Posts { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Blog>()
-           .HasMany(b => b.Posts)
-           .WithOne();
-    }
-}
-```
-
 [**Option 4: With defined Foreign Key ( No navigation property on both ends)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#without-navigation-property)
 ```csharp
 // Entities
-public class Blog
+public class Blog // Parent
 {
     public Guid Id { get; set; }
     public string Url { get; set; }
 }
-public class Post
+public class Post // Child
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
