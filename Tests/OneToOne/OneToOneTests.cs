@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Persistence.Contexts;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -36,7 +36,7 @@ namespace Bcan.Efpg.Tests.OneToOne
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtoContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.OtoContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

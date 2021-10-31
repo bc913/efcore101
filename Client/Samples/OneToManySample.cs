@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bcan.Efpg.Domain.Entities;
-using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Persistence.Contexts;
 
-namespace Bcan.Efpg.Domain.Samples
+namespace Bcan.Efpg.Persistence.Samples
 {
     public class OneToMany
     {

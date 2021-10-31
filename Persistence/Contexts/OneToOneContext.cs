@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Bcan.Efpg.Domain.Entities;
 
-namespace Bcan.Efpg.Domain.Contexts
+namespace Bcan.Efpg.Persistence.Contexts
 {
     public enum PrincipalType
     {

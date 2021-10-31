@@ -1,4 +1,4 @@
-﻿using Bcan.Efpg.Domain.Contexts;
+﻿using Bcan.Efpg.Persistence.Contexts;
 using Bcan.Efpg.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;

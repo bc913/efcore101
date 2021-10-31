@@ -7,18 +7,18 @@ namespace Bcan.Efpg.Client
         static void Main(string[] args)
         {
             //Bcan.Efpg.Domain.Samples.OneToOne.Run(
-            //    new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtoContext>()
+            //    new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.OtoContext>()
             //    .UseSqlite("Filename=OtoRecords.db").Options, 
-            //    Bcan.Efpg.Domain.Contexts.PrincipalType.Address, 
+            //    Bcan.Efpg.Persistence.Contexts.PrincipalType.Address, 
             //    true);
 
             //Bcan.Efpg.Domain.Samples.OneToMany.Run(
-            //    new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtmContext>()
+            //    new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.OtmContext>()
             //    .UseSqlite("Filename=OtmRecords.db").Options,
             //    true);
 
-            Bcan.Efpg.Domain.Samples.ManyToMany.Run(
-                new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.MtmContext>()
+            Persistence.Samples.ManyToMany.Run(
+                new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.MtmContext>()
                .UseSqlite("Filename=MtmRecords.db").Options);
         }
     }

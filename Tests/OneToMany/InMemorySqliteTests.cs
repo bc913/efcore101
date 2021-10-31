@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Data.Common;
 using Bcan.Efpg.Domain.Entities;
-using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Persistence.Contexts;
 using System.Linq;
 
 namespace Bcan.Efpg.Tests.OneToMany
@@ -15,7 +15,7 @@ namespace Bcan.Efpg.Tests.OneToMany
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.OtmContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.OtmContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {

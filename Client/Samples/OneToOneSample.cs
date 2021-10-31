@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Bcan.Efpg.Domain.Contexts;
+using Bcan.Efpg.Persistence.Contexts;
 using Bcan.Efpg.Domain.Entities;
 using System.Linq;
 
-namespace Bcan.Efpg.Domain.Samples
+namespace Bcan.Efpg.Persistence.Samples
 {
     public static class OneToOne
     {

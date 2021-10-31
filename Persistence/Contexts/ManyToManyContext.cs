@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Bcan.Efpg.Domain.Entities;
 
-namespace Bcan.Efpg.Domain.Contexts
-{    public class MtmContext : DbContext
+namespace Bcan.Efpg.Persistence.Contexts
+{   
+    public class MtmContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }

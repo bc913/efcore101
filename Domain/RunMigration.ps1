@@ -4,16 +4,16 @@ param([string]$ContextName="", [string]$RelativeMigrationDir="")
 if([string]::IsNullOrEmpty($ContextName))
 {
     # One to many
-    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.OtmContext -o "Migrations\OneToMany"
-    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.OtmContext
+    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.OtmContext -o "Migrations\OneToMany"
+    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.OtmContext
 
     # one to one
-    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.OtoContext -o "Migrations\OneToOne"
-    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.OtoContext
+    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.OtoContext -o "Migrations\OneToOne"
+    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.OtoContext
 
     # Many to many
-    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.MtmContext -o "Migrations\ManyToMany"
-    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Domain.Contexts.MtmContext
+    dotnet ef migrations add InitialCreate -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.MtmContext -o "Migrations\ManyToMany"
+    dotnet ef database update -p Domain.csproj -s Domain.csproj --context Bcan.Efpg.Persistence.Contexts.MtmContext
 }
 else
 {

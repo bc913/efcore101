@@ -38,7 +38,7 @@ namespace Bcan.Efpg.Tests.ManyToMany
     {
         private readonly DbConnection _connection;
 
-        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Domain.Contexts.MtmContext>()
+        public InMemorySqliteTests() : base(new DbContextOptionsBuilder<Bcan.Efpg.Persistence.Contexts.MtmContext>()
             .UseSqlite(CreateInMemoryDatabase())
             .Options)
         {
