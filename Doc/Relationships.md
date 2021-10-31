@@ -342,7 +342,11 @@ public class Post //Child
     public Guid Id { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    // Navigation property. EF Core allows you to navigate
+    // from child (Post) to parent (Blog)
     public Blog Blog { get; set; }
+    // Optional
+    public Guid BlogId { get; set; } // Foreign Key (Parent's primary key)
 }
 
 // Context
@@ -351,6 +355,7 @@ public class OtmContext : DbContext
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
 
+    // (Optional ???)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Post>()
@@ -425,6 +430,7 @@ public class OtmContext : DbContext
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
 
+    // (Optional ???)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Post>()
