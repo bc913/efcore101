@@ -32,7 +32,29 @@ To change the delete behavior of the dependent entity use `OnDelete()`
 ## Fully Defined vs. Ambiguous Relationships
 
 ### Fully defined relationships (unambigious)
-If the relationships between two entities are unambigous, then there is no need to configure the relationships via Fluent API or Data Annotations. It can be in one way (single navigation) or bidirectional
+If the relationships between two entities are unambigous, then there is no need to configure the relationships via Fluent API or Data Annotations. It can be in one way (single navigation) or bidirectional. Fully defined relationships can be achieved defining `navigation property` and `foreign key` at the same time in the dependent class.
+
+```csharp
+public class Blog
+{
+    public int BlogId { get; set; }
+    public string Url { get; set; }
+
+    public List<Post> Posts { get; set; }
+}
+
+public class Post
+{
+    public int PostId { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public int BlogId { get; set; }
+    public Blog Blog { get; set; }
+}
+```
+However, this is not always required. EF Core can still infer using several types of conventions.
+> Defining relationships in this way are always valid for any type of relationships.
 
 #### [One way (Single navigation)](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property)
 
@@ -97,14 +119,23 @@ It can be done through Fluent API ( advised) or Data Annotations. `Fluent API` s
 
 
 ## Relationship Types
+Each relationship type can be defined using `conventions` or `manual configuration`. Convention style definitions can also be using manual configuration using `Fluent API`. Manual configurations with Fluent API is used for additional adjustments of relationships.
 ### One to one
 When a single field in Table A is related to **only one** field in Table B. This can be considered as an answer of the question:
 > How a single field in Table A is represented in Table B?
 
-- **Basic Convention**: 
-
-This is the min requirement to satisfy the one-to-one relationship.
+Features:
+1. Dependent is always optional.
+2. Dependent must always have a parent type property.
+#### Conventions
 ```csharp
+//==================
+// 1
+//==================
+/*
+- An Address instance can NOT be persisted w/o a Student instance (Child)
+- A Student instance can be persisted w/o an Address instance (Parent)
+*/
 public class Address
 {
     public Guid Id { get; set; }
@@ -118,41 +149,38 @@ public class Student
     public string FullName { get; set; }
     public Address Address { get; set; }
 }
-```
-In this case, an instance of an `Address` can NOT be persisted w/o an instance of the parent, `Student` class because `System.Guid` is non-nullable. However, an instance of the parent `Student` class can be persisted with an instance of the child, `Address` class.
 
-> To satisfy the default `one-to-one` relationship, defining navigation property in the parent class and foreign key in the child class is adequate. Dependent end is optional (because it is nullable) and dependent must always have a parent. If one wants to change the default behavior, use configuration.
-
-> ADVANCED: Dependent data can be persisted within the parent's table with some additional setting.
-
-- **Convention 2**: 
-
-In EF Core context, each entity is associated to each other through single navigation property. Let's assume we have `Student` and `Address` entities. Property `Id` is `Principal Key (PK)` for both entities by default. 
-
-```csharp
-// Entities are simplified to focus better to the topic.
-
-public class Student
-{
-    public Guid Id { get; set; }
-
-    public string Name { get; set; }
-
-    public Address Address { get; set; }
-
-}
+//==================
+// 2
+//==================
+/*
+- Each end of the relationship accessing using navigation property
+- Instances of each entity can be persisted w/o each other.
+*/
 
 public class Address
 {
     public Guid Id { get; set; }
-
     public string City { get; set; }
-
-    public Student Student { get; set; }
-
+    public Guid StudentId{ get; private set; } // This breaks the ambiguity
+    public Student Student { get; set; } //nullable
 }
 
+public class Student
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public Address Address { get; set; }
+}
 ```
+
+> To satisfy the default `one-to-one` relationship, defining navigation property in the parent class and foreign key in the child class is adequate. Dependent end is optional (because it is nullable) and dependent must always have a parent. If one wants to change the default behavior, use configuration.
+
+In EF Core context, each entity is associated to each other through single navigation property. Let's assume we have `Student` and `Address` entities. Property `Id` is `Principal Key (PK)` for both entities by default. 
+
+> [!NOTE]
+> Dependent data can be persisted within the parent's table with some additional setting.
+
 In order to communicate with database, we have to define our custom `DbContext` class and provide so-called `repositories` in the form of `DbSet<entity_type>`.
 
 ```csharp
@@ -163,9 +191,48 @@ public class OtoContext : DbContext
     public OtoContext(DbContextOptions options) : base(options) {}
 }
 ```
-Now, we have to define the relationship. I prefer using `Fluent API` to configure relationships for several reasons. First, it has more control than `Data Annotations` does and is better suited to `Clean Architecture`. Since, definition of relationship is a data access layer operation, it is always better to keep it seperate from the data.
+#### Manual Configuration (FLuent API)
 
-Since each side of the relationship can be `principal` or  '`dependent`, `One-to-one` relationship between two entities can be achieved in several ways. We can assume that there are two types of `one-to-oone` relationships: `Optional` and `Required`
+Now, we have to define the relationship. I prefer using `Fluent API` to configure relationships for several reasons. First, it has more control than `Data Annotations` does and is better suited to `Clean Architecture`. Since, definition of relationship is a data access layer operation, it is always better to keep it seperate from the data.
+```csharp
+//==================
+// 2
+//==================
+/*
+- Ambigous ( which is dependent side not known. requires configuration)
+- Each end of the relationship accessing using navigation property
+- Instances of each entity can be persisted w/o each other.
+*/
+
+public class Address
+{
+    public Guid Id { get; set; }
+    public string City { get; set; }
+    public Student Student { get; set; } //nullable
+}
+
+public class Student
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public Address Address { get; set; }
+}
+// TODO
+public class OtoContext : DbContext
+{
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // One to one relationship
+        modelBuilder.Entity<Entities.Student>()
+            .HasOne(s => s.Address)
+            .WithOne(a => a.Student)
+            .HasForeignKey<Address>("StudentId"); // Address has foreign key named StudentId(this is shadow)
+    }
+}
+
+```
+
+Since each side of the relationship can be `principal` or  '`dependent`, `One-to-one` relationship between two entities can be achieved in several ways. We can assume that there are two types of `one-to-one` relationships: `Optional` and `Required`
 
 | Case    | Principal  Entity | Dependent Entity | Type     |
 | ------- | ----------------- | ---------------- | -------- |
