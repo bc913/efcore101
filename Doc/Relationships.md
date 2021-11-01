@@ -101,7 +101,34 @@ It can be done through Fluent API ( advised) or Data Annotations. `Fluent API` s
 When a single field in Table A is related to **only one** field in Table B. This can be considered as an answer of the question:
 > How a single field in Table A is represented in Table B?
 
+- **Basic Convention**: 
+
+This is the min requirement to satisfy the one-to-one relationship.
+```csharp
+public class Address
+{
+    public Guid Id { get; set; }
+    public string City { get; set; }
+    public Guid StudentId { get; set; } // Foreign key
+}
+
+public class Student
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; }
+    public Address Address { get; set; }
+}
+```
+In this case, an instance of an `Address` can NOT be persisted w/o an instance of the parent, `Student` class because `System.Guid` is non-nullable. However, an instance of the parent `Student` class can be persisted with an instance of the child, `Address` class.
+
+> To satisfy the default `one-to-one` relationship, defining navigation property in the parent class and foreign key in the child class is adequate. Dependent end is optional (because it is nullable) and dependent must always have a parent. If one wants to change the default behavior, use configuration.
+
+> ADVANCED: Dependent data can be persisted within the parent's table with some additional setting.
+
+- **Convention 2**: 
+
 In EF Core context, each entity is associated to each other through single navigation property. Let's assume we have `Student` and `Address` entities. Property `Id` is `Principal Key (PK)` for both entities by default. 
+
 ```csharp
 // Entities are simplified to focus better to the topic.
 
@@ -293,7 +320,7 @@ A customer can check out multiple video games but one video game can be checked 
 
 Let's start coding. I'll be following the one-to-many example available in Microsoft's documentation with some tweaks. We can define `one-to-many` relationship in different ways. I'll be showing two of them.
 
-[**Convention 1: (Default) No navigation property on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
+[**Convention 1: (Default) Skip navigation on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
 
 Child needs NO references back to the parent. EF Core understands 1:* relationship.
 
@@ -327,6 +354,7 @@ public class OtmContext : DbContext
            .WithOne();
     }
 }
+In this case the parent and the child can exist without each other.
 ```
 [**Convention 2: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
 ```csharp
@@ -442,11 +470,10 @@ public class OtmContext : DbContext
 }
 ```
 
-As one might have noticed, I prefer not using an additional property to define `Foreign Key` in the dependent entity. It is a database layer info and should not exist in our application logic unless we have to. I also don't find it meaningful to name identifier property as `<entity_name>Id` for obviuos reasons :). 
-
+As one might have noticed, I prefer not using an additional property to define `Foreign Key` in the dependent entity. It is a database layer info and should not exist in our application logic unless we have to. I also don't find it meaningful to name identifier property as `<entity_name>Id` for obviuos reasons :).
 ### Many to Many
 One record in Table A is related to one or multiple records in Table B and vice versa. In order to achieve this behavior, a `join` or `link` table should be provided.
-
+- **Before EF Core 5.0**:
 ```csharp
 public class Book
 {
@@ -507,6 +534,109 @@ public class MtmContext : DbContext
 ```
 The `Foreign Key` s are defined in `join` entity. For this relationship, I've not seen any usage of `Required` or `Optional` relationship configuration.
 
+- **After EF Core 5.0**:
+    1. Default Convention (Skip Navigation): There is no requirement to create a seperate class for join.
+
+```csharp
+public class Book
+{
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
+
+    public List<Author> Authors { get; set; } = new List<Author>();
+}
+
+public class Author
+{
+    public Guid Id { get; set; }
+
+    public string FullName { get; set; }
+
+    public List<Book> Books { get; set; } = new List<Book>();
+}
+
+// EF Core generates the join table under the hood.
+public class MtmContext : DbContext
+{
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Author> Authors { get; set; }
+}
+```
+
+2. Explicit definition of Join Table with additional data (Payload)
+
+```csharp
+public class Book
+{
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
+
+    public List<Author> Authors { get; set; } = new List<Author>();
+}
+
+public class Author
+{
+    public Guid Id { get; set; }
+
+    public string FullName { get; set; }
+
+    public List<Book> Books { get; set; } = new List<Book>();
+}
+// Explicit definition
+public class BookAuthor
+{
+    public Guid BookId { get; set; }
+    public Guid AuthorId { get; set;}
+    // Payload
+    public DateTime DateJoined { get; set; }
+}
+
+// When additional payload exists, the default construction of many-to-many relationship does not occur. You have to define explicitly.
+public class MtmContext : DbContext
+{
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Author> Authors { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Author>
+            .HasMany(a => a.Books)
+            .WithMany(b => b.Authors)
+            .UsingEntity<BookAuthor>
+            (
+                ba=>ba.HasOne<Author>().WithMany(),
+                ba=>ba.HasOne<Book>().WithMany()
+            )
+            .Property(ba=>ba.DateJoined)
+            .HasDefaultValueSql("getdate()");
+    }
+}
+
+
+```
+
+## Misc.
+- If non-nullable foreign key types (i.e. `int`) is used, then the instance of the container class (dependent) can NOT persist without the corresponding independent class.
+```csharp
+public class Parent
+{
+    public int Id { get; private set; }
+    // other properties & fields
+}
+
+public class Child
+{
+    public int Id { get; private set; }
+    // Some other properties or fields
+
+    // int non-nullable so Child can NOT persist without Parent instance
+    public int ParentId { get; set; }
+}
+```
+- If parent is defined as navigation property, then Child instance can persist without the parent because the type Parent is nullable.
 ## References
 https://github.com/dotnet/efcore/issues/10084#issuecomment-336947129
 
