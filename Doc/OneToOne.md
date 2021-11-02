@@ -103,6 +103,8 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .HasForeignKey<Address>("StudentId"); // Address is using "Student" + "Id" as foreign key (shadow)
 }
 
+
+
 /*
 - Required
 - An Address instance can NOT be persisted w/o a Student instance (Child)
@@ -117,6 +119,13 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .HasForeignKey<Address>("StudentId") // Address is using "Student" + "Id" as foreign key (shadow)
         .IsRequired();
 }
+
+// Client
+var em = new Employee("Osman");
+context.AddEmployee(em); // Make it track before associating it to the dependent
+// otherwise it will throw UNIQUE id constraint exception
+var addr = new Address("Istanbul", em);
+context.AddAddress(addr);
 ```
 
 ## Bidirectional Navigation
