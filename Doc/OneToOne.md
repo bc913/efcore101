@@ -118,3 +118,37 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .IsRequired();
 }
 ```
+
+## Bidirectional Navigation
+
+### Navigation Property
+```csharp
+//==================
+// Convention
+//==================
+/*
+- This will NOT work because it is ambigious. The dependent and principal sides could not be determined so 
+manual configuration is required.
+*/
+public class Address
+{
+    public Guid Id { get; set; }
+    public string City { get; set; }
+    public Student Student { get; set; }
+}
+
+public class Student
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; }
+    public Address Address { get; set;}
+}
+
+// Client
+var em = new Employee("Osman");
+context.AddEmployee(em); // Make it track before associating it to the dependent
+// otherwise it will throw UNIQUE id constraint exception
+var addr = new Address("Istanbul", em);
+context.AddAddress(addr);
+
+```
