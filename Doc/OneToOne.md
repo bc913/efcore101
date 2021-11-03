@@ -129,7 +129,39 @@ context.AddAddress(addr);
 ```
 
 ## Bidirectional Navigation
+### Foreign Key
+```csharp
+//==================
+// Convention
+//==================
+public class Address
+{
+    private Address() { }
+    public Address(string city) { City = city; }
+    public Address(string city, Guid employeeId) { City = city; EmployeeId = employeeId; }
 
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public string City { get; private set; }
+    public Guid EmployeeId { get; private set; }
+}
+
+public class Employee
+{
+    public Employee(string name) { Name = name; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public string Name { get; private set; }
+    public Guid AddressId { get; set; }
+}
+
+// At this point, no relationship exists. Use Fluent API to define one
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Address>()
+        .HasOne<Employee>()
+        .WithOne()
+        .HasForeignKey<Address>(a => a.EmployeeId); // Address has the foreign key so it is dependent
+}
+```
 ### Navigation Property
 ```csharp
 //==================
@@ -138,6 +170,7 @@ context.AddAddress(addr);
 /*
 - This will NOT work because it is ambigious. The dependent and principal sides could not be determined so 
 manual configuration is required.
+SQLite Error 19: 'FOREIGN KEY constraint failed'.
 */
 public class Address
 {
@@ -152,6 +185,15 @@ public class Student
     public string FullName { get; set; }
     public Address Address { get; set;}
 }
+// One side should be dependent and the other should be principal
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Address>()
+        .HasOne<Employee>(a => a.Employee)
+        .WithOne(e => e.Address)
+        .HasForeignKey<Address>("EmployeeId");
+        // IsRequired(); for required relationship
+}
 
 // Client
 var em = new Employee("Osman");
@@ -160,4 +202,9 @@ context.AddEmployee(em); // Make it track before associating it to the dependent
 var addr = new Address("Istanbul", em);
 context.AddAddress(addr);
 
+// Query
+var employee_ = context.Employees.FirstOrDefault();
+Console.WriteLine($"City: {employee_.Address.City}");//City: Istanbul
+var address_ = context.Addresses.FirstOrDefault();
+Console.WriteLine($"Employee: {address_.Employee.Name}");//Employee: Osman
 ```
