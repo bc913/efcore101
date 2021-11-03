@@ -197,7 +197,8 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 
 // Client
 var em = new Employee("Osman");
-context.AddEmployee(em); // Make it track before associating it to the dependent
+context.AddEmployee(em); // not required
+// Make it track before associating it to the dependent
 // otherwise it will throw UNIQUE id constraint exception
 var addr = new Address("Istanbul", em);
 context.AddAddress(addr);
