@@ -183,12 +183,47 @@ A customer can check out multiple video games but one video game can be checked 
 
 Let's start coding. I'll be following the one-to-many example available in Microsoft's documentation with some tweaks. We can define `one-to-many` relationship in different ways. I'll be showing two of them.
 
-[**Convention 1: (Default) Skip navigation on dependent (child)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
+[**Foreign Key on dependent and no navigation property**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#without-navigation-property)
+```csharp
+//==================
+// Convention
+//==================
+public class Blog // Parent
+{
+    public Guid Id { get; set; }
+    public string Url { get; set; }
+}
+public class Post // Child
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public Guid BlogId { get; set;}
+}
+//==================
+// Manual Configuration
+//==================
+public class OtmContext : DbContext
+{
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Post>()
+           .HasOne<Blog>()
+           .WithMany()
+           .HasForeignKey(p=>p.BlogId);
+    }
+}
+```
+
+[**Single navigation property on principal**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#single-navigation-property-1)
 
 Child needs NO references back to the parent. EF Core understands 1:* relationship.
 
 ```csharp
-// Entities
+//==================
+// Convention
+//==================
 public class Blog // Parent
 {
     public Guid Id { get; set; }
@@ -203,23 +238,66 @@ public class Post // Child
     // No navigation property
 }
 
-// Context
-public class OtmContext : DbContext
-{
-    public DbSet<Blog> Blogs { get; set; }
-    public DbSet<Post> Posts { get; set; }
+// At this point, the relationship is optional. Use Fluent API for required relationship.
 
-    // (Optional???)
+//==================
+// Manual Configuration
+//==================
+/*
+*/
+public class OtmContext : DbContext
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Blog>()
            .HasMany(b => b.Posts)
-           .WithOne();
+           .WithOne()
+           .IsRequired();
     }
 }
-In this case the parent and the child can exist without each other.
 ```
-[**Convention 2: Implicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
+[**No Foreign Key (BiDirectional navigation - properties on both ends)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
+
+If no foreign key property is found, a shadow foreign key property will be introduced with the name `<navigation property name><principal key property name> or <principal entity name><principal key property name>` if no navigation is present on the dependent type.
+```csharp
+//==================
+// Convention
+//==================
+public class Blog //Parent
+{
+    public Guid Id { get; set; }
+    public string Url { get; set; }
+    public List<Post> Posts { get; private set; } = new List<Post>();
+}
+public class Post //Child
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public Blog Blog { get; set; }
+}
+// At this point, the relationship is optional. Use Fluent API for required relationship.
+
+//==================
+// Manual Configuration
+//==================
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Add the shadow property to model
+    // modelBuilder.Entity<Post>()
+    //     .Property<Guid>("BlogForeignKey");
+
+    modelBuilder.Entity<Post>()
+        .HasOne(p => p.Blog)
+        .WithMany(b => b.Posts)
+        /*.HasForeignKey("BlogForeignKey") // if shadow property is added*/
+        .IsRequired();
+}
+```
+
+
+
+[**Foreign Key and bidirectional navigation**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#manual-configuration)
 ```csharp
 // Entities
 public class Blog //Parent
@@ -237,7 +315,6 @@ public class Post //Child
     // Navigation property. EF Core allows you to navigate
     // from child (Post) to parent (Blog)
     public Blog Blog { get; set; }
-    // Optional
     public Guid BlogId { get; set; } // Foreign Key (Parent's primary key)
 }
 
@@ -247,12 +324,12 @@ public class OtmContext : DbContext
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
 
-    // (Optional ???)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Post>()
             .HasOne(p => p.Blog)
             .WithMany(b => b.Posts);
+            .HasForeignKey(p=>p.BlogId);// This is optional if Foregin key name matches the pattern <principal_entity>_Id. Use this if you have custom names foreign key
         // Or
         //modelBuilder.Entity<Blog>()
         //    .HasMany(b => b.Posts)
@@ -261,79 +338,6 @@ public class OtmContext : DbContext
 }
 
 ```
-[**Convention 3: Explicit Shadow Foreign Key**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#shadow-foreign-key)
-```csharp
-// Entities
-public class Blog //Parent
-{
-    public Guid Id { get; set; }
-    public string Url { get; set; }
-    public List<Post> Posts { get; private set; } = new List<Post>();
-}
-public class Post //Child
-{
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-    public Blog Blog { get; set; }
-}
-
-// Context
-public class OtmContext : DbContext
-{
-    public DbSet<Blog> Blogs { get; set; }
-    public DbSet<Post> Posts { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // Add the shadow property to model
-        modelBuilder.Entity<Post>()
-            .Property<Guid>("BlogForeignKey");
-
-        // Use it as foreign key
-        modelBuilder.Entity<Post>()
-            .HasOne(p => p.Blog)
-            .WithMany(b => b.Posts)
-            .HasForeignKey<Post>("BlogForeignKey");
-    }
-}
-```
-
-[**Convention 4: With defined Foreign Key ( No navigation property on both ends)**](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#without-navigation-property)
-```csharp
-// Entities
-public class Blog // Parent
-{
-    public Guid Id { get; set; }
-    public string Url { get; set; }
-}
-public class Post // Child
-{
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-
-    public Guid BlogId { get; set;}
-}
-
-// Context
-public class OtmContext : DbContext
-{
-    public DbSet<Blog> Blogs { get; set; }
-    public DbSet<Post> Posts { get; set; }
-
-    // (Optional ???)
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Post>()
-           .HasOne<Blog>()
-           .WithMany()
-           .HasForeignKey(p=>p.BlogId);
-    }
-}
-```
-
-As one might have noticed, I prefer not using an additional property to define `Foreign Key` in the dependent entity. It is a database layer info and should not exist in our application logic unless we have to. I also don't find it meaningful to name identifier property as `<entity_name>Id` for obviuos reasons :).
 ### Many to Many
 One record in Table A is related to one or multiple records in Table B and vice versa. In order to achieve this behavior, a `join` or `link` table should be provided.
 - **Before EF Core 5.0**:
