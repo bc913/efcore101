@@ -7,6 +7,7 @@
     - [One-to-one](#one-to-one)
     - [One-to-Many](#one-to-many)
     - [Many-to-Many](#many-to-many)
+    - [Many-to-One](#many-to-one)
 - [Resources](#resources)
 
 ## Introduction
@@ -485,6 +486,58 @@ public class MtmContext : DbContext
 
 ```
 
+
+### Many to One
+```csharp
+//==================
+// Convention
+//==================
+public class Student //dependent
+{
+    private Student() { }
+    
+    // Ctor arguments should have the same name with the properties
+    // Otherwise EF Core will throw
+    public Student(string name, string email, Course favoriteCourse)
+    {
+        Name = name;
+        Email = email;
+        FavoriteCourse = favoriteCourse;
+    }
+
+    public long Id { get; private set; }
+    public string Name { get; private set; }
+    public string Email { get; private set; }
+    public Course FavoriteCourse { get; private set; }
+}
+
+public class Course //Principal
+{
+    public long Id { get; set; }
+    public string Name { get; set; }
+}
+
+// At this point Convention leads to one to one relationship so Manual Configuration
+// is needed for many to one
+//==================
+// Manual Configuration
+//==================
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Student>(s =>
+    {
+        s.ToTable("Student").HasKey(k => k.Id);
+        s.HasOne(p => p.FavoriteCourse)
+            .WithMany();
+            //.IsRequired() for required relationships
+    });
+}
+
+/*
+If the relationship optional, deleting the course will mark the course id in student table row as null.
+if the relationship is required, deleting the course will remove the enrolled students, too.
+*/
+```
 ## Misc.
 - If non-nullable foreign key types (i.e. `int`) is used, then the instance of the container class (dependent) can NOT persist without the corresponding independent class.
 ```csharp
