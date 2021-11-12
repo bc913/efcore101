@@ -13,6 +13,7 @@ This documentation mainly has a similar categorization as done in Microsoft's of
 - [Relationships](Doc/Relationships.md)
 - [CRUD Operations](Doc/CrudOperations.md)
 - [Testing](Doc/Testing.md)
+- [DDD & EF Core](Doc/DDD_EFCore.md)
 
 ## Repository
 A sample EF Core repository is provided. It is tested on Windows OS. SQLite database provider is used. If you want to access database samples, I suggest using `DB Browser for SQLite`. Click [here](https://sqlitebrowser.org/) for details. 
