@@ -168,3 +168,6 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 ```
 
 Value converters can only be used to convert a property into a single column. EF Core 6.0 might allow conversion of a property into multiple columns.
+
+## References
+- [Microsoft Docs - Implementing value objects](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/implement-value-objects)
